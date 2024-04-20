@@ -4,5 +4,5 @@ INSTRUCTIONS FOR RUNNING:
 
 
 NOTES: 
-1. Since the database automation is not yet implemented, NO DATABASE is still found in this version of the program
+1. Since the database automation is not yet implemented, NO DATABASE is still found in this version of the program, but the SQL script is included here.
 2. Only the login system is implemented so far. 
