@@ -496,7 +496,9 @@ def menu_main(connection, user = User):
             exit()
         elif menu == 1: # explore saved builds
             pc = menu_build(user)
-            change = 0
+            # Reset save flag to unchanged (0) if user switches to new PC build
+            if pc != user.pc_list[-1]:
+                change = 0
         elif menu == 2: # case
             change = update_case(connection, pc)
         elif menu == 3: # cooler
