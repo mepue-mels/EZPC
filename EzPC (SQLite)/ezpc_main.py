@@ -3,9 +3,14 @@
 
 import ezpc_functions
 from ezpc_classes import *
+import os.path, sqlite3
 
 # Define database file to be used
-DB = "ezpc.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, "ezpc.db")
+DB = db_path
+
+# DB = "ezpc.db"
 
 """"""
 
