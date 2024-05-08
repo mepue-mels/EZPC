@@ -1,6 +1,13 @@
 import sqlite3
 from tkinter import *
 from PIL import Image, ImageTk
+import pathlib, os
+
+# controllers
+def get_asset(img_file_name):
+    curr_dir = pathlib.Path(__file__).parent.resolve()
+    img_path = os.path.join(curr_dir, "assets", img_file_name)
+    return img_path
 
 #colors
 color_black = "#323232"
@@ -23,7 +30,7 @@ home_window.configure(bg = color_lightgray)
 home_window.resizable(False,False)
 
 #assets
-img_icon = Image.open("c:/Users/K3lite/Documents/Repo/EZPC/assets/ezpc-01.png")
+img_icon = Image.open(get_asset("logo.png"))
 res_icon = img_icon.resize((64,64), resample = 3)
 icon = ImageTk.PhotoImage(res_icon)
 
