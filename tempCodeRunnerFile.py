@@ -1,1 +1,1 @@
-l
+Button(header, image = back, bg = color_lightgray, borderwidth = 0, highlightthickness = 0, relief = "flat", command = open_home).place(x=18,y=18)
