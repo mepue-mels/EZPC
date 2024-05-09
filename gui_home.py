@@ -9,6 +9,11 @@ def get_asset(img_file_name):
     img_path = os.path.join(curr_dir, "assets", img_file_name)
     return img_path
 
+def open_login():
+    home_window.destroy()
+    import gui_login
+    gui_login.main()
+
 #colors
 color_black = "#323232"
 color_lightgray = "#D9D9D9"
@@ -34,8 +39,10 @@ img_icon = Image.open(get_asset("logo.png"))
 res_icon = img_icon.resize((64,64), resample = 3)
 icon = ImageTk.PhotoImage(res_icon)
 
-Frame(home_window, width = 750, height = 82, bg = color_blue).place(x=0,y=0)
-Label(image = icon, bg = color_blue).place(x=9,y=9)
+header = Frame(home_window, width = 750, height = 82, bg = color_blue).place(x=0,y=0)
+Label(header, image = icon, bg = color_blue).place(x=9,y=9)
+Button(header, text = "logout", font = ("Ubuntu Mono", 14), fg = "white", bg = color_blue, borderwidth = 0, highlightthickness = 0, relief = "flat", command = open_login).place(x=650,y=28)
+Button(header, text = "saved_builds", font = ("Ubuntu Mono", 14), fg = "white", bg = color_blue, borderwidth = 0, highlightthickness = 0, relief = "flat").place(x=520,y=28)
 
 
 # part select frame

@@ -2,6 +2,7 @@ import sqlite3
 from tkinter import *
 from PIL import Image, ImageTk
 import pathlib, os
+import ezpc_functions
 
 # controllers
 def get_asset(img_file_name):
@@ -53,7 +54,7 @@ img_icon = Image.open(get_asset("logo.png"))
 res_icon = img_icon.resize((64,64), resample = 3)
 icon = ImageTk.PhotoImage(res_icon)
 
-img_enter = Image.open(get_asset("login_enter.png"))
+img_enter = Image.open(get_asset("enter.png"))
 res_enter = img_enter.resize((45,45), resample = 3)
 enter = ImageTk.PhotoImage(res_enter)
 

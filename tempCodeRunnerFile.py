@@ -1,3 +1,4 @@
-Frame(login_window, width = 300, height = 120, bg = color_blue).place(x=0,y=0)
-
-Label(image = icon, bg = color_blue).place(x=118,y=28)
+def open_login():
+    signup_window.destroy()
+    import gui_login
+    gui_login.main()

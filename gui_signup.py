@@ -49,11 +49,11 @@ img_icon = Image.open(get_asset("logo.png"))
 res_icon = img_icon.resize((32,32), resample = 3)
 icon = ImageTk.PhotoImage(res_icon)
 
-img_confirm = Image.open(get_asset("signup_confirm.png"))
+img_confirm = Image.open(get_asset("confirm.png"))
 res_confirm = img_confirm.resize((45,45), resample = 3)
 confirm = ImageTk.PhotoImage(res_confirm)
 
-img_back = Image.open(get_asset("signup_back.png"))
+img_back = Image.open(get_asset("back.png"))
 res_back = img_back.resize((45,45), resample = 3)
 back = ImageTk.PhotoImage(res_back)
 
