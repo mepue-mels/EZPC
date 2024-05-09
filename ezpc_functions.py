@@ -1,9 +1,14 @@
 """ezpc_functions.py"""
 # This file contains the functions used for EzPC: PC Parts Picker
 
-import sqlite3
 from ezpc_queries import *
 from ezpc_classes import *
+import os.path, sqlite3
+
+# Define database file to be used
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, "ezpc.db")
+DB = db_path
 
 """ SERVER FUNCTIONS """
 
@@ -43,56 +48,60 @@ def execute_query(db, query, fetchall=True):
 
 # Function to add username and password to database
 # User can enter 0 to exit the program
-def create_user(conn):
+def create_user(un = " ", pw = " "):
+    connection = sqlite3.connect(DB)
     while True:
         print("---USER REGISTER---")
         print("Enter 0 to exit the program.")
 
-        # Username and password must be 3 or more characters in length
-        username = input("Enter username (3 or more characters): ")
-        if username == "0":
-            exit()
-        password = input("Enter password (3 or more characters): ")
-        if password == "0":
-            exit()
+        # # Username and password must be 3 or more characters in length
+        # username = input("Enter username (3 or more characters): ")
+        # if username == "0":
+        #     exit()
+        # password = input("Enter password (3 or more characters): ")
+        # if password == "0":
+        #     exit()
 
         # Check if username or password passes length requirement
-        if len(username) < 3 or len(username) < 3:
-            print("Username or password too short.")
-            continue
+        # if len(un) < 3 or len(pw) < 3:
+        #     print("Username or password too short.")
+        #     continue
 
         # Execute a SELECT query if the username already exists in the database
-        cursor = conn.cursor()
-        cursor.execute(user_select_username_query, (username,))
+        cursor = connection.cursor()
+        cursor.execute(user_select_username_query, (un,))
 
         # Check if any results were returned
         if cursor.fetchone(): # The user inputted an existing username
             print("The username already exists in the database. Try again.")
+            return True
         else: # The user inputted a unique username
-            cursor.execute("SELECT LAST_INSERT_ID()")
-            uid = cursor.fetchone()[0]
-            cursor.execute(user_insert_query, (uid, username, password))
-            conn.commit()
+            cursor.execute("SELECT * FROM user_details WHERE user_id = (SELECT MAX(user_id) FROM user_details);")
+            uid = cursor.fetchone()[0] + 1
+            cursor.execute(user_insert_query, (uid, un, pw))
+            connection.commit()
             print("User added to the database.")
-            break
+            return False
     
 # Function to check if username and password is in database
 # User can enter 0 to exit the program
 # Returns user record as list
-def login_user(connection):
+def login_user(un = " ", pw = " "):
+    connection = sqlite3.connect(DB)
     print("---USER LOGIN---")
     print("Enter 0 to exit the program.")
+    print(un + " " + pw)
     while True:
-        username = input("Enter username: ")
-        if username == "0":
-            exit()
-        password = input("Enter password: ")
-        if password == "0":
-            exit()
+        # username = input("Enter username: ")
+        # if username == "0":
+        #     exit()
+        # password = input("Enter password: ")
+        # if password == "0":
+        #     exit()
 
         # Execute a SELECT query to check if the username and password combination exists
         cursor = connection.cursor()
-        cursor.execute(verify_login_query, (username, password))
+        cursor.execute(verify_login_query, (un, pw))
 
         # Check if any rows were returned
         result = cursor.fetchone()
@@ -102,6 +111,7 @@ def login_user(connection):
             return user
         else:
             print("Username and password combination does not exist in the database.")
+            return
 
 
 """ DATA DISPLAY FUNCTIONS """
@@ -125,6 +135,7 @@ def display_current_build(user = User, pc = Computer):
     for i in range(0,8):
         price += pc.part_list[i][2]
     print(f"Price: {price}",end="")
+    return price
 
 # Function to display the user's saved PC builds from the database
 def display_saved_build(user = User):
@@ -135,7 +146,8 @@ def display_saved_build(user = User):
 """ DATA CRUD FUNCTIONS """
 
 # Function to retrieve PC builds owned by the user from the database
-def read_pc_list(connection, user = User):
+def read_pc_list(user = User):
+    connection = sqlite3.connect(DB)
     # Check for existing PC builds by the user
     cursor = connection.cursor()
     cursor.execute(pc_select_query, (user.user_id,))
@@ -180,6 +192,7 @@ def read_pc_list(connection, user = User):
 
         # print(repr(comp))
         cursor.close()
+        print(user.pc_list)
     return
       
 # Function to update case in current PC build
@@ -443,57 +456,59 @@ def menu_login(connection):
 # Function to display the main menu for the EzPC program
 # Entering 0 will prompt the user if they wish to save the
 # PC build into the SQL database
-def menu_main(connection, user = User):
-
+def menu_main(user = User):
+    connection = sqlite3.connect(DB)
     # Retrieve saved PC builds from database, if any
-    read_pc_list(connection, user)
+    read_pc_list(user)
 
     # Initialize new PC build by default and append to PC list
     pc = user.new_pc()
 
     # print(user.pc_list[1].part_list)
     print(f"Welcome back, {user.user_name}!")
-    menu = -1
-    change = 0
-    while menu != 0:
-        display_current_build(user, pc)
-        try:
-            menu = int(input(display_main_menu))
-        except:
-            print("Invalid option.")
-            continue
-        if menu == -1:
-            flag = delete_pc(connection, pc)
-            if flag:
-                user.init_pc_list()
-                read_pc_list(connection, user)
-                pc = user.new_pc()
-                change = 0
-        elif menu == 0:
-            if change == 1:
-                update_pc(connection, user, pc, change)
-            exit()
-        elif menu == 1: # explore saved builds
-            pc = menu_build(user)
-            # Reset save flag to unchanged (0) if user switches to new PC build
-            if pc != user.pc_list[-1]:
-                change = 0
-        elif menu == 2: # case
-            change = update_case(connection, pc)
-        elif menu == 3: # cooler
-            change = update_cooler(connection, pc)
-        elif menu == 4: # cpu
-            change = update_cpu(connection, pc)
-        elif menu == 5: # gpu
-            change = update_gpu(connection, pc)
-        elif menu == 6: # mobo
-            change = update_mobo(connection, pc)
-        elif menu == 7: # psu
-            change = update_psu(connection, pc)
-        elif menu == 8: # ram
-            change = update_ram(connection, pc)
-        elif menu == 9: # storage
-            change = update_storage(connection, pc)
+    price = display_current_build(user, pc)
+    return price
+    # menu = -1
+    # change = 0
+    # while menu != 0:
+    #     display_current_build(user, pc)
+    #     try:
+    #         menu = int(input(display_main_menu))
+    #     except:
+    #         print("Invalid option.")
+    #         continue
+    #     if menu == -1:
+    #         flag = delete_pc(connection, pc)
+    #         if flag:
+    #             user.init_pc_list()
+    #             read_pc_list(connection, user)
+    #             pc = user.new_pc()
+    #             change = 0
+    #     elif menu == 0:
+    #         if change == 1:
+    #             update_pc(connection, user, pc, change)
+    #         exit()
+    #     elif menu == 1: # explore saved builds
+    #         pc = menu_build(user)
+    #         # Reset save flag to unchanged (0) if user switches to new PC build
+    #         if pc != user.pc_list[-1]:
+    #             change = 0
+    #     elif menu == 2: # case
+    #         change = update_case(connection, pc)
+    #     elif menu == 3: # cooler
+    #         change = update_cooler(connection, pc)
+    #     elif menu == 4: # cpu
+    #         change = update_cpu(connection, pc)
+    #     elif menu == 5: # gpu
+    #         change = update_gpu(connection, pc)
+    #     elif menu == 6: # mobo
+    #         change = update_mobo(connection, pc)
+    #     elif menu == 7: # psu
+    #         change = update_psu(connection, pc)
+    #     elif menu == 8: # ram
+    #         change = update_ram(connection, pc)
+    #     elif menu == 9: # storage
+    #         change = update_storage(connection, pc)
 
 # Function to display the PC build selection menu
 # Called when the user presses [1]
