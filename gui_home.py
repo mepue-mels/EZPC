@@ -53,11 +53,13 @@ Button(header, text = "saved_builds", font = ("Ubuntu Mono", 14), fg = "white", 
 partselect_frame = Frame(home_window, width = 400, height = 393, bg = "red")
 partselect_frame.place(x=25,y=107)
 
+Scrollbar(partselect_frame, orient="vertical").place(x=0,y=0)
+
 # summary frame
 summary_frame = Frame(home_window, width = 275, height = 370, bg = color_gray)
 summary_frame.place(x=450,y=107)
 
-TOTAL_PRICE = "$XXXX.XX" # add total price here
+TOTAL_PRICE = "PXXXX.XX" # add total price here
 
 Button(summary_frame, image = save, bg = color_gray, borderwidth = 0, highlightthickness = 0, relief = "flat").place(x=220,y=315)
 Label(summary_frame, text = TOTAL_PRICE, fg = color_black, bg = color_gray, font = ("Ubuntu Mono", 24, "bold")).place(x=10,y=300)
