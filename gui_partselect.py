@@ -26,7 +26,7 @@ color_red = "#ED4D4D"
 
 #window resolutions
 reso_login = '300x400'
-reso_home = '750x500'
+reso_home = '469x331'
 
 #root window
 partselect_window = Tk()
@@ -42,13 +42,14 @@ back = ImageTk.PhotoImage(res_back)
 
 header = Frame(partselect_window, width = 750, height = 82, bg = color_lightgray).place(x=0,y=0)
 Button(header, image = back, bg = color_lightgray, borderwidth = 0, highlightthickness = 0, relief = "flat", command = open_home).place(x=18,y=18)
-Label(header, text = "search", fg = color_black, bg = color_lightgray, font = ("Ubuntu Mono", 14)).place(x=410,y=25)
-searchbox = Entry(header, width = 25, fg = color_black, bg = color_lightgray, border = 0, font = ("Ubuntu Mono", 14, "bold")).place(x=474,y=28)
-Frame(header,width = 250, height = 1, bg = color_black).place(x=475,y=48)
+Label(header, text = "search", fg = color_black, bg = color_lightgray, font = ("Ubuntu Mono", 14)).place(x=410-275,y=25)
+searchbox = Entry(header, width = 25, fg = color_black, bg = color_lightgray, border = 0, font = ("Ubuntu Mono", 14, "bold")).place(x=474-275,y=28)
+Frame(header,width = 230, height = 1, bg = color_black).place(x=475-275,y=48)
 
 # part select frame
-partselect_frame = Frame(partselect_window, width = 700, height = 420, bg = "red").place(x=25,y=80)
-# partselect_frame.pack(fill=BOTH, expand=True)
+partselect_frame = Frame(partselect_window, width = 700, height = 420, bg = "red")
+partselect_frame.pack(fill=NONE, expand=TRUE)
+partselect_frame.place(x=25,y=80)
 
 # TESTING AREA
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -58,22 +59,19 @@ conn = sqlite3.connect(db)
 
 def display():
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM cpu_data")
+    cursor.execute("SELECT name, price FROM cpu_data")
 
     tree = ttk.Treeview(partselect_frame)
 
-    tree["columns"] = ("one", "two", "three", "four", "five")
+    tree["columns"] = ("one", "two")
     tree.column("#0", width=0, stretch=NO)  # Hide main column
     tree.heading("#0", text="", anchor=W)  # Hide main column heading
 
-    tree.heading("one", text="Column 1")
-    tree.heading("two", text="Column 2")
-    tree.heading("three", text="Column 3")
-    tree.heading("four", text="Column 4")
-    tree.heading("five", text="Column 5")
+    tree.column("one", width=300)
+    tree.column("two", width=100)
 
     vsb = Scrollbar(partselect_frame, orient="vertical", command=tree.yview)
-    vsb.pack(side=RIGHT, fill=Y)
+    vsb.pack(side=RIGHT, fill=BOTH)
     tree.configure(yscrollcommand=vsb.set)
 
     for row in cursor:
