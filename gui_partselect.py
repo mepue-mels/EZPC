@@ -1,9 +1,9 @@
 import sqlite3
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 import pathlib, os
-
+    
 # controllers
 def get_asset(img_file_name):
     curr_dir = pathlib.Path(__file__).parent.resolve()
@@ -57,9 +57,11 @@ db_path = os.path.join(BASE_DIR, "ezpc.db")
 db = db_path
 conn = sqlite3.connect(db)
 
+part_type = "gpu_data"
+
 def display():
     cursor = conn.cursor()
-    cursor.execute("SELECT name, price FROM cpu_data")
+    cursor.execute("SELECT name, price FROM " + part_type)
 
     tree = ttk.Treeview(partselect_frame)
 
@@ -70,6 +72,9 @@ def display():
     tree.column("one", width=300)
     tree.column("two", width=100)
 
+    tree.heading("one", text="Part", anchor=W)
+    tree.heading("two", text="Price", anchor=W)
+
     vsb = Scrollbar(partselect_frame, orient="vertical", command=tree.yview)
     vsb.pack(side=RIGHT, fill=BOTH)
     tree.configure(yscrollcommand=vsb.set)
@@ -78,6 +83,18 @@ def display():
         tree.insert("", "end", values=row)
 
     tree.pack(fill=BOTH, expand=True)
+
+    def add_to_list():
+        selected_item = tree.focus()
+        item_values = tree.item(selected_item, 'values')
+        if item_values:
+            # Here, you can insert the selected item into your new database
+            # For demonstration, let's print the selected item
+            print("Selected Item:", item_values)
+            messagebox.showinfo(title="", message="Part added!")
+            open_home()
+    
+    tree.bind("<Double-1>", lambda event: add_to_list())
 
 display()
 

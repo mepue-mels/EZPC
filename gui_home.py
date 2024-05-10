@@ -18,6 +18,11 @@ def main(user):
         import gui_login
         gui_login.main()
 
+    def open_partselect():
+        home_window.destroy()
+        import gui_partselect
+        gui_partselect.main()
+
     price = menu_main(user)
 
     # colors
@@ -58,6 +63,8 @@ def main(user):
     # part select frame
     partselect_frame = Frame(home_window, width = 400, height = 393, bg = "red")
     partselect_frame.place(x=25,y=107)
+
+    Button(partselect_frame, text="add motherboard", fg=color_black, bg=color_lightgray, command=open_partselect).place(x=0,y=0)
 
     # summary frame
     summary_frame = Frame(home_window, width = 275, height = 370, bg = color_gray)
