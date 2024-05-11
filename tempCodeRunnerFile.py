@@ -1,1 +1,0 @@
-messagebox.showerror(title="Thou shall not pass!", message="Invalid credentials.")
