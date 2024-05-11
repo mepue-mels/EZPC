@@ -29,9 +29,12 @@ def main():
             messagebox.showerror(title="Thou shall not pass!", message="Invalid credentials.")
 
     def open_ezpc(user):
+        print(user)
+        pc = user.new_pc()
         login_window.destroy()
         import gui_home
-        gui_home.main(user)
+        gui_home.main(user, pc)
+        # menu_main(user)
 
     def open_signup():
         login_window.destroy()
@@ -100,5 +103,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-# if __name__ == "__main__":
-#     exec(open("gui_login.py").read)

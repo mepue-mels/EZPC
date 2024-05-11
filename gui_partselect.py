@@ -3,18 +3,19 @@ from tkinter import *
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 import pathlib, os
+from ezpc_functions import *
 
-def main():
+def main(user, part):
     # controllers
     def get_asset(img_file_name):
         curr_dir = pathlib.Path(__file__).parent.resolve()
         img_path = os.path.join(curr_dir, "assets", img_file_name)
         return img_path
 
-    def open_home():
+    def open_home(part):
         partselect_window.destroy()
         import gui_home
-        gui_home.main()
+        gui_home.main(user, user.pc_list[-1])
 
     #colors
     color_black = "#323232"
@@ -40,10 +41,8 @@ def main():
     img_back = Image.open(get_asset("back.png"))
     res_back = img_back.resize((45,45), resample = 3)
     back = ImageTk.PhotoImage(res_back)
-
-    part_type = "mobo"
-
-    match part_type:
+    
+    match part:
         case "mobo":
             selected_table = "mobo_data"
             selected_part = "motherboard"
@@ -68,34 +67,39 @@ def main():
         case "case":
             selected_table = "case_data"
             selected_part = "case"
+        case _:
+            print("Error")
+            raise SystemExit
     
     partselect_header = Frame(partselect_window, width = 450, height = 82, bg = color_lightgray).place(x=0,y=0)
-    Button(partselect_header, image = back, bg = color_lightgray, borderwidth = 0, highlightthickness = 0, relief = "flat", command = open_home).place(x=18,y=18)
-    Label(partselect_header, text=selected_part, fg="white", bg=color_lightgray, font=("Ubuntu Mono", 40, "bold")).place(x=80,y=18)
+    Button(partselect_header, image = back, bg = color_lightgray, borderwidth = 0, highlightthickness = 0, relief = "flat").place(x=18,y=18)
+    Label(partselect_header, text=selected_part, fg=color_black, bg=color_lightgray, font=("Ubuntu Mono", 40, "bold")).place(x=80,y=18)
 
     # part select frame
     partselect_frame = Frame(partselect_window, width = 700, height = 420, bg = color_blue)
     partselect_frame.pack(fill=NONE, expand=TRUE)
     partselect_frame.place(x=25,y=80)
-
-    # TESTING AREA
+    
+    # part adding
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(BASE_DIR, "ezpc.db")
     db = db_path
     conn = sqlite3.connect(db)
 
     def display():
+        
         cursor = conn.cursor()
-        cursor.execute("SELECT name, price FROM " + selected_table)
+        cursor.execute("SELECT name, price, id FROM " + selected_table)
 
         tree = ttk.Treeview(partselect_frame)
 
-        tree["columns"] = ("one", "two")
+        tree["columns"] = ("one", "two", "three")
         tree.column("#0", width=0, stretch=NO)  # Hide main column
         tree.heading("#0", text="", anchor=W)  # Hide main column heading
 
         tree.column("one", width=300)
         tree.column("two", width=100)
+        tree.column("three", width=0, minwidth=0) # hide ID
 
         tree.heading("one", text="Part", anchor=W)
         tree.heading("two", text="Price", anchor=W)
@@ -124,7 +128,7 @@ def main():
                 tree.delete(item)
 
             # Fetch data from the database again based on the search term
-            cursor.execute("SELECT name, price FROM " + selected_table)
+            cursor.execute("SELECT name, price, id FROM " + selected_table)
             for row in cursor:
                 if any(search_term in str(cell).lower() for cell in row):
                     tree.insert("", "end", values=row)
@@ -136,11 +140,28 @@ def main():
             selected_item = tree.focus()
             item_values = tree.item(selected_item, 'values')
             if item_values:
-                # Here, you can insert the selected item into your new database
-                # For demonstration, let's print the selected item
+                match part:
+                    case "mobo":
+                        update_mobo(user.pc_list[-1], item_values[2])
+                    case "cpu":
+                        update_cpu(user.pc_list[-1], item_values[2])
+                    case "cooler":
+                        update_cooler(user.pc_list[-1], item_values[2])
+                    case "ram":
+                        update_ram(user.pc_list[-1], item_values[2])
+                    case "gpu":
+                        update_gpu(user.pc_list[-1], item_values[2])
+                    case "storage":
+                        update_storage(user.pc_list[-1], item_values[2])
+                    case "psu":
+                        update_psu(user.pc_list[-1], item_values[2])
+                    case "case":
+                        update_case(user.pc_list[-1], item_values[2])
+
+
                 print("Selected Item:", item_values)
-                messagebox.showinfo(title="", message="Part added!")
-                open_home()
+                messagebox.showinfo(title="Nice!", message="Part added!")
+                open_home(part)
 
         tree.bind("<Double-1>", lambda event: add_to_list())
 
@@ -148,5 +169,6 @@ def main():
 
     partselect_window.mainloop()
 
+
 if __name__ == "__main__":
-    main()
+    main(user = User, part = str)

@@ -62,10 +62,13 @@ class Computer:
                         ]
     
     def __repr__(self) -> str:
-        return f"User ID = {self.user_id}\nComp ID = {self.comp_id}\nComp Name = {self.comp_name}"
+        return f"User ID = {self.user_id}\nComp ID = {self.comp_id}\nComp Name = {self.comp_name}\n"
 
     def add_part(self, Part):
         self.part_list.append(Part)
+
+    def get_part_list(self):
+        return self.part_list
     
     def remove_part(self, part_id):
         for part in self.part_list:

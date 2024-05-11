@@ -196,14 +196,15 @@ def read_pc_list(user = User):
     return
       
 # Function to update case in current PC build
-def update_case(connection, pc = Computer):
-    print("---CASE SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired case ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_case(pc = Computer, id = int):
+    # print("---CASE SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired case ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
+        connection = sqlite3.connect(DB)
 
         # Execute a SELECT query and check if the case ID exists in the database
         cursor = connection.cursor()
@@ -218,14 +219,15 @@ def update_case(connection, pc = Computer):
             print(f"Case ID {id} does not exist in database.")
 
 # Function to update cooler in current PC build
-def update_cooler(connection, pc = Computer):
-    print("---COOLER SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired cooler ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_cooler(pc = Computer, id = int):
+    # print("---COOLER SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired cooler ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
+        connection = sqlite3.connect(DB)
 
         # Execute a SELECT query and check if the cooler ID exists in the database
         cursor = connection.cursor()
@@ -240,14 +242,15 @@ def update_cooler(connection, pc = Computer):
             print(f"Cooler ID {id} does not exist in database.")
 
 # Function to update CPU in current PC build
-def update_cpu(connection, pc = Computer):
-    print("---CPU SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired CPU ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_cpu(pc = Computer, id = int):
+    # print("---CPU SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired CPU ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
+        connection = sqlite3.connect(DB)
 
         # Execute a SELECT query and check if the CPU ID exists in the database
         cursor = connection.cursor()
@@ -262,15 +265,16 @@ def update_cpu(connection, pc = Computer):
             print(f"CPU ID {id} does not exist in database.")
 
 # Function to update GPU in current PC build
-def update_gpu(connection, pc = Computer):
-    print("---GPU SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired GPU ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_gpu(pc = Computer, id = int):
+    # print("---GPU SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired GPU ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
 
+        connection = sqlite3.connect(DB)
         # Execute a SELECT query and check if the GPU ID exists in the database
         cursor = connection.cursor()
         cursor.execute(part_select_gpu_query, (id,))
@@ -284,15 +288,16 @@ def update_gpu(connection, pc = Computer):
             print(f"GPU ID {id} does not exist in database.")
 
 # Function to update motherboard in current PC build
-def update_mobo(connection, pc = Computer):
-    print("---MOTEHRBOARD SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired motherboard ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_mobo(pc = Computer, id = int):
+    # print("---MOTEHRBOARD SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired motherboard ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
 
+        connection = sqlite3.connect(DB)
         # Execute a SELECT query and check if the motherboard ID exists in the database
         cursor = connection.cursor()
         cursor.execute(part_select_mobo_query, (id,))
@@ -306,15 +311,16 @@ def update_mobo(connection, pc = Computer):
             print(f"Motherboard ID {id} does not exist in database.")
 
 # Function to update power supply in current PC build
-def update_psu(connection, pc = Computer):
-    print("---POWER SUPPLY SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired power supply ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_psu(pc = Computer, id = int):
+    # print("---POWER SUPPLY SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired power supply ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
 
+        connection = sqlite3.connect(DB)
         # Execute a SELECT query and check if the power supply ID exists in the database
         cursor = connection.cursor()
         cursor.execute(part_select_psu_query, (id,))
@@ -328,15 +334,16 @@ def update_psu(connection, pc = Computer):
             print(f"Power supply ID {id} does not exist in database.")
 
 # Function to update RAM in current PC build
-def update_ram(connection, pc = Computer):
-    print("---RAM SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired RAM ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_ram(pc = Computer, id = int):
+    # print("---RAM SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired RAM ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
 
+        connection = sqlite3.connect(DB)
         # Execute a SELECT query and check if the RAM ID exists in the database
         cursor = connection.cursor()
         cursor.execute(part_select_ram_query, (id,))
@@ -350,15 +357,16 @@ def update_ram(connection, pc = Computer):
             print(f"RAM ID {id} does not exist in database.")
 
 # Function to update storage in current PC build
-def update_storage(connection, pc = Computer):
-    print("---STORAGE SELECTOR---")
-    while True:
-        try:
-            id = int(input("Type in desired storage ID for your PC: "))
-        except ValueError:
-            print("Invalid ID.")
-            continue
+def update_storage(pc = Computer, id = int):
+    # print("---STORAGE SELECTOR---")
+    # while True:
+    #     try:
+    #         id = int(input("Type in desired storage ID for your PC: "))
+    #     except ValueError:
+    #         print("Invalid ID.")
+    #         continue
 
+        connection = sqlite3.connect(DB)
         # Execute a SELECT query and check if the storage ID exists in the database
         cursor = connection.cursor()
         cursor.execute(part_select_storage_query, (id,))
@@ -463,52 +471,54 @@ def menu_main(user = User):
 
     # Initialize new PC build by default and append to PC list
     pc = user.new_pc()
-
-    # print(user.pc_list[1].part_list)
+    print(user.pc_list[-1].part_list)
     print(f"Welcome back, {user.user_name}!")
-    price = display_current_build(user, pc)
-    return price
-    # menu = -1
-    # change = 0
-    # while menu != 0:
-    #     display_current_build(user, pc)
-    #     try:
-    #         menu = int(input(display_main_menu))
-    #     except:
-    #         print("Invalid option.")
-    #         continue
-    #     if menu == -1:
-    #         flag = delete_pc(connection, pc)
-    #         if flag:
-    #             user.init_pc_list()
-    #             read_pc_list(connection, user)
-    #             pc = user.new_pc()
-    #             change = 0
-    #     elif menu == 0:
-    #         if change == 1:
-    #             update_pc(connection, user, pc, change)
-    #         exit()
-    #     elif menu == 1: # explore saved builds
-    #         pc = menu_build(user)
-    #         # Reset save flag to unchanged (0) if user switches to new PC build
-    #         if pc != user.pc_list[-1]:
-    #             change = 0
-    #     elif menu == 2: # case
-    #         change = update_case(connection, pc)
-    #     elif menu == 3: # cooler
-    #         change = update_cooler(connection, pc)
-    #     elif menu == 4: # cpu
-    #         change = update_cpu(connection, pc)
-    #     elif menu == 5: # gpu
-    #         change = update_gpu(connection, pc)
-    #     elif menu == 6: # mobo
-    #         change = update_mobo(connection, pc)
-    #     elif menu == 7: # psu
-    #         change = update_psu(connection, pc)
-    #     elif menu == 8: # ram
-    #         change = update_ram(connection, pc)
-    #     elif menu == 9: # storage
-    #         change = update_storage(connection, pc)
+    # return pc
+    menu = -1
+    change = 0
+    while menu != 0:
+        # price = int(display_current_build(user, pc))
+        price = 0
+        import gui_home
+        updated_part = gui_home.main(user)
+
+        # try:
+        #     menu = int(input(display_main_menu))
+        # except:
+        #     print("Invalid option.")
+        #     continue
+        if menu == -1:
+            flag = delete_pc(connection, pc)
+            if flag:
+                user.init_pc_list()
+                read_pc_list(connection, user)
+                pc = user.new_pc()
+                change = 0
+        elif menu == 0:
+            if change == 1:
+                update_pc(connection, user, pc, change)
+            exit()
+        elif menu == 1: # explore saved builds
+            pc = menu_build(user)
+            # Reset save flag to unchanged (0) if user switches to new PC build
+            if pc != user.pc_list[-1]:
+                change = 0
+        elif menu == 2: # case
+            change = update_case(connection, pc)
+        elif menu == 3: # cooler
+            change = update_cooler(connection, pc)
+        elif menu == 4: # cpu
+            change = update_cpu(connection, pc)
+        elif menu == 5: # gpu
+            change = update_gpu(connection, pc)
+        elif menu == 6: # mobo
+            change = update_mobo(connection, pc)
+        elif menu == 7: # psu
+            change = update_psu(connection, pc)
+        elif menu == 8: # ram
+            change = update_ram(connection, pc)
+        elif menu == 9: # storage
+            change = update_storage(connection, pc)
 
 # Function to display the PC build selection menu
 # Called when the user presses [1]
